@@ -163,12 +163,80 @@ namespace Dungeongame_Butaeva
                 }
                 else
                 {
-                    Console.WriteLine("Ответ неверный. Попробуйте снова.") ;
+                    Console.WriteLine("Ответ неверный. Попробуйте снова.");
                 }
             }
         }
+        static void VisitMerchant(Player player)
+        {
+            Console.WriteLine("Торговец предлагает купить зелье за 30 золота.");
+            if (player.Gold >= 30)
+            {
+                player.Gold -= 30;
+                if (player.InventoryCount < 5)
+                {
+                    player.Inventory[player.InventoryCount++] = "Potion";
+                    Console.WriteLine("Вы купили зелье.");
+                }
+                else
+                {
+                    Console.WriteLine("Ваш инвентарь полон!");
+                }
+            }
+            else
+            {
+                Console.WriteLine("У вас недостаточно золота.");
+            }
+        }
+        static void FightWithBoss(Player player)
+        {
+            Random rand = new Random();
+            int bossHealth = 100; // Здоровье босса
+            Console.WriteLine("Вы встретили босса!");
+
+            while (bossHealth > 0 && player.Health > 0)
+            {
+                Console.WriteLine("Выберите оружие: 1 - Меч, 2 - Лук");
+                int choice = int.Parse(Console.ReadLine());
+
+                int damage = 0;
+                if (choice == 1) // Меч
+                {
+                    damage = rand.Next(10, 21);
+                }
+                else if (choice == 2 && player.Arrows > 0) // Лук
+                {
+                    damage = rand.Next(5, 16);
+                    player.Arrows--;
+                }
+                else if (choice == 2 && player.Arrows <= 0)
+                {
+                    Console.WriteLine("У вас нет стрел!");
+                    continue;
+                }
+                bossHealth -= damage;
+                Console.WriteLine($"Вы нанесли {damage} урона боссу. У него осталось {bossHealth} HP.");
+                if (bossHealth > 0)
+                {
+                    int bossDamage = rand.Next(10, 21);
+                    player.Health -= bossDamage;
+                    Console.WriteLine($"Босс атакует вас и наносит {bossDamage} урона. У вас осталось {player.Health} HP.");
+                }
+            }
+            if (bossHealth <= 0)
+            {
+                Console.WriteLine("Вы победили босса! Поздравляем! УРААА") ;
+            }
+        }
+    }
+    class Player
+    {
+        public int Health { get; set; } = 100; // Здоровье игрока
+        public int Gold { get; set; } = 0; // Золото игрока
+        public int Arrows { get; set; } = 5; // Количество стрел
+        public string[] Inventory { get; set; } = new string[5]; // Инвентарь игрока
+        public int InventoryCount { get; set; } = 0; // Количество предметов в инвентаре
+        public Player() { } // Хранит характеристики игрока: здоровье,золото,кол-во стрел, инвентарь и кол-во предметов в инвентаре
     }
 }
-        
-       
 

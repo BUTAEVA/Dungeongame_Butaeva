@@ -93,7 +93,7 @@ namespace Dungeongame_Butaeva
                 else if (choice == 2 && player.Arrows <= 0)
                 {
                     Console.WriteLine("У вас нет стрел!");
-                    continue; // Пропускаем итерацию цикла
+                    continue; 
                 }
 
                 monsterHealth -= damage;
